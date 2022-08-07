@@ -8,7 +8,7 @@ export async function createUser(user) {
             name, email, password
         ]);
     } catch (error) {
-        if (error.detail && error.detail.includes("already exists")) throw "EMAIL_EXIST";
+        if (error.detail && error.detail.includes("already exists")) throw "EMAIL_EXISTS";
         throw "UNEXPECTED_ERROR";
     }
 }
