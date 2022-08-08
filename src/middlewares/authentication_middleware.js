@@ -9,8 +9,8 @@ export function verifyToken(req, res, next) {
     try {
         console.log(authorization);
         const [, token] = authorization.split(" ");
-        verify(token, process.env.JWT_KEY);
-        console.log('validooo');
+        res.locals.userData = verify(token, process.env.JWT_KEY);
+        next();
     } catch (error) {
         return res.status(401).send({ message: "Token inválido!" });
     }

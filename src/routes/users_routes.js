@@ -1,6 +1,6 @@
 import { Router } from "express";
-import { getUserStats } from "../controllers/users_controller";
-import { verifyToken } from "../middlewares/authentication_middleware";
+import { getUserStats } from "../controllers/users_controller.js";
+import { verifyToken } from "../middlewares/authentication_middleware.js";
 
 const usersRouter = Router();
 

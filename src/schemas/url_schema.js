@@ -6,5 +6,8 @@ export const urlSchema = joi.object({
         .pattern(
             /^https?:\/\/(?:www\.)?[-a-zA-Z0-9@:%._\+~#=]{1,256}\.[a-zA-Z0-9()]{1,6}\b(?:[-a-zA-Z0-9()@:%_\+.~#?&\/=]*)$/
         )
-        .required(),
+        .required().messages({
+            "any.required": "Você deve informar a URL!",
+            "any.pattern": "Você deve informar uma URL válida!"
+        }),
 });

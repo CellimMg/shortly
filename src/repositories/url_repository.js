@@ -9,6 +9,7 @@ export async function create(object) {
         );
         return response;
     } catch (error) {
+        console.log(error)
         throw "UNEXPECTED_ERROR";
     }
 }
@@ -39,11 +40,12 @@ export async function readByShortUrl(url) {
 
 export async function updateVisitCount(url) {
     try {
-        await connection.query(
+        await client.query(
             'UPDATE urls SET "visitCount" = "visitCount" + 1 WHERE "shortUrl" = $1',
             [url]
         );
     } catch (error) {
+        console.log(error);
         throw "UNEXPECTED_ERROR";
     }
 }
