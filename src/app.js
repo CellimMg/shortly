@@ -5,6 +5,8 @@ import signupRouter from "./routes/signup_routes.js";
 import urlRouter from "./routes/url_routes.js";
 import usersRouter from "./routes/users_routes.js";
 import rankingRouter from "./routes/ranking_routes.js";
+import dotenv from "dotenv";
+dotenv.config();
 
 const server = express();
 
@@ -16,6 +18,6 @@ server.use(urlRouter);
 server.use(usersRouter);
 server.use(rankingRouter);
 
-server.listen(4000, () => {
+server.listen(process.env.PORT, () => {
     console.log("Listening to port 4000");
 });
