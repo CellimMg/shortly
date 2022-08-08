@@ -26,3 +26,43 @@ export async function readUser(user) {
         throw "UNEXPECTED_ERROR";
     }
 }
+
+export async function readSession(userId) {
+    try {
+        const { rows } = await client.query(
+            'SELECT * FROM "sessions" WHERE "sessions"."userId" = $1', [
+            userId
+        ]);
+        return rows;
+    } catch (error) {
+
+        throw "UNEXPECTED_ERROR";
+    }
+}
+
+export async function updateSession(session) {
+    const { userId, token } = session;
+    try {
+        await client.query(
+            'UPDATE "sessions" SET token = $1 WHERE "sessions"."userId" = $2', [
+            token, userId
+        ]);
+    } catch (error) {
+        console.log(error);
+
+        throw "UNEXPECTED_ERROR";
+    }
+}
+
+export async function createSession(session) {
+    const { userId, token } = session;
+    try {
+        await client.query(
+            'INSERT INTO "sessions" (token, "userId") VALUES ($1, $2)', [
+            token, userId
+        ]);
+    } catch (error) {
+        console.log(error);
+        throw "UNEXPECTED_ERROR";
+    }
+}

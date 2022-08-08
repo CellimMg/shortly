@@ -1,6 +1,10 @@
 import signupSchema from "../schemas/signup_schema.js";
-import { createUser, readUser } from "../repositories/auth_repository.js";
+import { createUser, readUser, createSession, readSession, updateSession } from "../repositories/auth_repository.js";
 import signinSchema from "../schemas/signin_schema.js";
+import pkg from 'jsonwebtoken';
+const { sign, verify } = pkg;
+import dotenv from "dotenv";
+dotenv.config();
 
 export async function signup(req, res) {
     try {
@@ -23,10 +27,22 @@ export async function signup(req, res) {
 export async function signin(req, res) {
     try {
         const data = req.body;
+
         validateSignin(data);
-        const user = await readUser(data);
-        console.log(user);
-        return res.sendStatus(200);
+
+        const user = (await readUser(data))[0];
+
+        if (!user) return res.status(401).send({ message: "Email e/ou senha inválido(s)!" });
+
+        const userToken = (await readSession(user.id))[0];
+        const newToken = generateToken(user);
+        if (!userToken) {
+            await createSession({ userId: user.id, token: newToken });
+        } else {
+            await updateSession({ userId: user.id, token: newToken });
+        }
+
+        return res.status(200).send({ token: newToken });
     } catch (error) {
         console.log(error);
         switch (error) {
@@ -38,6 +54,13 @@ export async function signin(req, res) {
     }
 }
 
+function generateToken(user) {
+    const token = sign({}, process.env.JWT_KEY, {
+        subject: `${user.id}`,
+        expiresIn: "30m"
+    });
+    return token;
+}
 
 function validateSignin(signin) {
     const { error } = signinSchema.validate(signin);
