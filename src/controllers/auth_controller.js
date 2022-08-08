@@ -13,6 +13,7 @@ export async function signup(req, res) {
         await createUser(data);
         return res.sendStatus(201);
     } catch (error) {
+        console.log(error);
         switch (error) {
             case "UNEXPECTED_ERROR":
                 return res.status(500).send({ message: "Ocorreu um erro inesperado! Tente novamente em instantes ou entre em contato com um administrador!" });
