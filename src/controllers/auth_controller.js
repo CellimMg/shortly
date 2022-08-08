@@ -57,7 +57,7 @@ export async function signin(req, res) {
 function generateToken(user) {
     const token = sign({}, process.env.JWT_KEY, {
         subject: `${user.id}`,
-        expiresIn: "30m"
+        expiresIn: "20s"
     });
     return token;
 }
